@@ -58,7 +58,7 @@ class Program
             // Search entries. This is the added feature as part of exceeding requirements
             else if (choice == 5)
             {
-                Console.WriteLine("Enter a keyword to search: ");
+                Console.Write("Enter a keyword to search: ");
                 string keyword = Console.ReadLine();
 
                 journal.SearchEntries(keyword);
