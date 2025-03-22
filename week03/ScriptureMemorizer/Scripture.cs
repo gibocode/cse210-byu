@@ -7,21 +7,85 @@ public class Scripture
 
     public Scripture(Reference reference, string text)
     {
-        
+        _reference = reference;
+
+        string[] words = text.Split(' ');
+
+        foreach (string word in words)
+        {
+            _words.Add(new Word(word));
+        }
     }
 
-    private void HideRandomWords(int numberToHide)
+    public void HideRandomWords(int numberToHide)
     {
+        Random random = new Random();
+        int wordsVisible = CountVisibleWords();
 
+        if (numberToHide > wordsVisible)
+        {
+            numberToHide = wordsVisible;
+        }
+
+        for (int i = 0; i < numberToHide; i++)
+        {
+            int index = random.Next(0, _words.Count);
+            Word word = _words[index];
+
+            while (word.IsHidden())
+            {
+                index = random.Next(0, _words.Count);
+                word = _words[index];
+            }
+
+            word.Hide();
+        }
     }
 
-    private string GetDisplayText()
+    public string GetDisplayText()
     {
-        return "";
+        string displayText = _reference.GetDisplayText() + " - ";
+
+        foreach (Word word in _words)
+        {
+            displayText += word.GetDisplayText() + " ";
+        }
+
+        return displayText.Trim();
     }
 
-    private bool IsCompletelyHidden()
+    public bool IsCompletelyHidden()
     {
-        return false;
+        bool completelyHidden = true;
+
+        foreach (Word word in _words)
+        {
+            if (!word.IsHidden())
+            {
+                completelyHidden = false;
+                break;
+            }
+        }
+
+        return completelyHidden;
+    }
+
+    /**
+     * Counts the number of words that are not hidden.
+     * This method is used to determine the number of words that can be hidden.
+     */
+    private int CountVisibleWords()
+    {
+        int count = 0;
+
+        foreach (Word word in _words)
+        {
+            if (!word.IsHidden())
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 }
