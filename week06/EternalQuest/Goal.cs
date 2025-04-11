@@ -30,7 +30,7 @@ public abstract class Goal
         return _shortName;
     }
 
-    public virtual int GetPoints()
+    public int GetPoints()
     {
         return _points;
     }
